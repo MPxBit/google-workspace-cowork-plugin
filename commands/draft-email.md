@@ -15,15 +15,11 @@ The user wants to create a draft email on the account profile specified in $ARGU
    - **Bcc**: (optional)
    - **Subject**: email subject line
    - **Body**: email body text
-3. Build the RFC 2822 message and base64url-encode it:
-   ```bash
-   RAW=$(printf 'To: <to>\r\nCc: <cc>\r\nBcc: <bcc>\r\nSubject: <subject>\r\nContent-Type: text/plain; charset="UTF-8"\r\n\r\n<body>' | base64 -w 0 | tr '+/' '-_' | tr -d '=')
-   ```
-4. Create the draft:
-   ```bash
-   GOOGLE_WORKSPACE_CLI_CONFIG_DIR=~/.config/gws/profiles/<profile> \
-     gws gmail users drafts create \
-       --params '{"userId": "me"}' \
-       --json "{\"message\": {\"raw\": \"$RAW\"}}"
-   ```
-5. Report success with the draft ID
+3. Call the `mcp__google-workspace__gmail_create_draft` tool with:
+   - `profile`: the profile name
+   - `to`: recipient email(s)
+   - `subject`: email subject
+   - `body`: email body text
+   - `cc`: CC recipients (if provided)
+   - `bcc`: BCC recipients (if provided)
+4. Report success with the draft ID

@@ -9,19 +9,8 @@ Parse $ARGUMENTS for: profile name, file/folder ID, and destination parent folde
 ## Steps
 
 1. Parse arguments: `<profile> <file-id> <new-parent-id>`
-2. Get the file's current parent:
-   ```bash
-   GOOGLE_WORKSPACE_CLI_CONFIG_DIR=~/.config/gws/profiles/<profile> \
-     gws drive files get --params '{
-       "fileId": "<file-id>",
-       "fields": "id,name,parents"
-     }'
-   ```
-3. Move the file using the current parent as `removeParents`:
-   ```bash
-   GOOGLE_WORKSPACE_CLI_CONFIG_DIR=~/.config/gws/profiles/<profile> \
-     gws drive files update \
-       --params '{"fileId": "<file-id>", "addParents": "<new-parent-id>", "removeParents": "<old-parent-id>"}' \
-       --json '{}'
-   ```
-4. Confirm the move with the file name and new location
+2. Call the `mcp__google-workspace__drive_move_file` tool with:
+   - `profile`: the profile name
+   - `file_id`: the file or folder ID
+   - `new_parent_id`: the destination folder ID
+3. Confirm the move with the file name and new location

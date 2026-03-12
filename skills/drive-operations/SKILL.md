@@ -1,105 +1,63 @@
 ---
 name: gws-drive-operations
-description: Google Drive file and folder operations using gws CLI — create folders, move files, move folders, list contents, search. Use when the user needs to manage files or folders in Google Drive.
+description: Google Drive file and folder operations using MCP tools — create folders, move files, move folders, list contents, search. Use when the user needs to manage files or folders in Google Drive.
 ---
 
-# Google Drive Operations via gws CLI
+# Google Drive Operations via MCP Tools
 
-All commands require a profile. Prefix every command with:
-```bash
-GOOGLE_WORKSPACE_CLI_CONFIG_DIR=~/.config/gws/profiles/<profile> gws ...
-```
+All operations require a `profile` parameter (e.g., "work", "CRM1").
+
+## List Files / Search
+
+Use `mcp__google-workspace__drive_list_files` with:
+- `profile`: account profile name
+- `query`: Google Drive search query (e.g., `name contains 'report'`)
+- `folder_id`: parent folder ID to list contents of
+- `page_size`: number of results (default 20)
 
 ## Create a Folder
 
-```bash
-gws drive files create --json '{
-  "name": "Folder Name",
-  "mimeType": "application/vnd.google-apps.folder"
-}'
-```
-
-Create a subfolder inside a parent folder:
-
-```bash
-gws drive files create --json '{
-  "name": "Subfolder Name",
-  "mimeType": "application/vnd.google-apps.folder",
-  "parents": ["<parent-folder-id>"]
-}'
-```
+Use `mcp__google-workspace__drive_create_folder` with:
+- `profile`: account profile name
+- `name`: folder name
+- `parent_id`: parent folder ID (optional, omit for root)
 
 ## Move a File or Folder
 
-Moving requires `update` with `addParents` and `removeParents`:
-
-```bash
-gws drive files update \
-  --params '{"fileId": "<file-id>", "addParents": "<new-parent-id>", "removeParents": "<old-parent-id>"}' \
-  --json '{}'
-```
-
-## List Files in a Folder
-
-```bash
-gws drive files list --params '{
-  "q": "\"<folder-id>\" in parents and trashed = false",
-  "pageSize": 100,
-  "fields": "files(id,name,mimeType,modifiedTime)"
-}'
-```
-
-## Search for Files by Name
-
-```bash
-gws drive files list --params '{
-  "q": "name contains \"search term\" and trashed = false",
-  "pageSize": 20,
-  "fields": "files(id,name,mimeType,parents,modifiedTime)"
-}'
-```
+Use `mcp__google-workspace__drive_move_file` with:
+- `profile`: account profile name
+- `file_id`: ID of the file or folder to move
+- `new_parent_id`: ID of the destination folder
 
 ## Upload a File
 
-```bash
-gws drive files create \
-  --json '{"name": "filename.pdf", "parents": ["<folder-id>"]}' \
-  --upload ./local-file.pdf
-```
+Use `mcp__google-workspace__drive_upload_file` with:
+- `profile`: account profile name
+- `local_path`: local file path to upload
+- `name`: file name in Drive (defaults to local filename)
+- `parent_id`: parent folder ID (optional)
 
 ## Get File Metadata
 
-```bash
-gws drive files get --params '{
-  "fileId": "<file-id>",
-  "fields": "id,name,mimeType,parents,modifiedTime,size,webViewLink"
-}'
-```
+Use `mcp__google-workspace__drive_get_file` with:
+- `profile`: account profile name
+- `file_id`: file or folder ID
 
 ## Delete a File (Trash)
 
-```bash
-gws drive files update \
-  --params '{"fileId": "<file-id>"}' \
-  --json '{"trashed": true}'
-```
+Use `mcp__google-workspace__drive_delete_file` with:
+- `profile`: account profile name
+- `file_id`: file or folder ID to trash
 
-## Batch Operations Across Accounts
+## Bulk Operations Across Accounts
 
-When performing the same operation across multiple accounts, run commands in parallel:
-
-```bash
-for profile in $(ls ~/.config/gws/profiles/); do
-  GOOGLE_WORKSPACE_CLI_CONFIG_DIR=~/.config/gws/profiles/$profile \
-    gws drive files list --params '{"pageSize": 5}' &
-done
-wait
-```
+Use `mcp__google-workspace__bulk_drive_list` with:
+- `profiles`: comma-separated profile names, or "all"
+- `query`: Drive search query
 
 ## Important Notes
 
 - Folder mimeType is always `application/vnd.google-apps.folder`
-- Use `--page-all` for paginated results when listing many files
-- The `q` parameter uses Google Drive query syntax: https://developers.google.com/drive/api/guides/search-files
+- The `query` parameter uses Google Drive query syntax: https://developers.google.com/drive/api/guides/search-files
 - Always include `trashed = false` in queries to exclude trashed items
 - File/folder IDs are returned in the `id` field of creation and list responses
