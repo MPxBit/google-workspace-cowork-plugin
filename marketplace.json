@@ -1,0 +1,13 @@
+{
+  "name": "google-workspace-cowork-plugin",
+  "description": "Multi-account Google Workspace automation — Drive and Gmail via gws CLI",
+  "version": "0.1.0",
+  "plugins": [
+    {
+      "name": "gw",
+      "description": "Multi-account Google Drive file/folder management and Gmail drafts using gws CLI",
+      "version": "0.1.0",
+      "path": "."
+    }
+  ]
+}
