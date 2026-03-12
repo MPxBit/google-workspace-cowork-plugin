@@ -1,13 +1,17 @@
 {
   "name": "google-workspace-cowork-plugin",
-  "description": "Multi-account Google Workspace automation — Drive and Gmail via gws CLI",
-  "version": "0.1.0",
+  "owner": {
+    "name": "MPxBit"
+  },
+  "metadata": {
+    "description": "Multi-account Google Workspace automation — Drive and Gmail via gws CLI"
+  },
   "plugins": [
     {
       "name": "gw",
+      "source": "./",
       "description": "Multi-account Google Drive file/folder management and Gmail drafts using gws CLI",
-      "version": "0.1.0",
-      "path": "."
+      "version": "0.1.0"
     }
   ]
 }
