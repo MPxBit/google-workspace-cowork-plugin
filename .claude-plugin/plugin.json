@@ -1,0 +1,10 @@
+{
+  "name": "gw",
+  "description": "Multi-account Google Workspace automation — Drive file/folder management and Gmail drafts across multiple Google accounts using gws CLI",
+  "version": "0.1.0",
+  "author": {
+    "name": "mpaige"
+  },
+  "homepage": "https://github.com/googleworkspace/cli",
+  "keywords": ["google-drive", "gmail", "multi-account", "automation"]
+}

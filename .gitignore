@@ -1,0 +1,13 @@
+# Credentials - never commit
+credentials.json
+credentials.enc
+client_secret*.json
+.encryption_key
+*.key
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node (if gws installed locally)
+node_modules/
